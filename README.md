@@ -1,133 +1,135 @@
 ﻿# java-runner2026
 
-Windows 命令行工具：扫描本机 JVM 安装位置，提示用户选择一个，并在**当前终端**用该 JVM 运行可配置的 Java 启动命令。
+> 中文版：[README_cn.md](README_cn.md)
 
-## 扫描范围
+Windows command-line tool: scan local JVM installations, let the user pick one, and run a configurable Java launch command in the **current terminal** with that JVM.
 
-- 注册表（JavaSoft、Eclipse Adoptium、Microsoft JDK、Azul Zulu 等）
-- 环境变量（名称含 `JAVA` / `JDK` / `JRE` 的变量，以及 `PATH` 中的 `java.exe`）
-- `Program Files` 常见 Java 目录
-- 文件关联、 `where java` 、常见安装路径
+## Scan scope
 
-## 构建
+- Registry (JavaSoft, Eclipse Adoptium, Microsoft JDK, Azul Zulu, etc.)
+- Environment variables (names containing `JAVA` / `JDK` / `JRE`, plus `java.exe` entries on `PATH`)
+- Common Java directories under `Program Files`
+- File associations, `where java`, and typical install paths
+
+## Build
 
 ```powershell
-# Python 脚本依赖（文档/图标/打包）
+# Python dependencies (docs, icons, packaging)
 pip install -r requirements.txt
 
-# 生成多分辨率图标（源文件：素材/icon_16x16.png … icon_256x256.png）
+# Multi-resolution icon (sources: 素材/icon_16x16.png … icon_256x256.png)
 python scripts/build_icon.py
 
 cargo build --release
 ```
 
-## 文档构建
+## Documentation build
 
-源文件（`doc/` 目录仅保留 Markdown）：`doc/guide_cn.md`、`doc/guide_en.md`。
+Sources (Markdown only under `doc/`): `doc/guide_cn.md`, `doc/guide_en.md`.
 
 ```powershell
-# 生成 dist/doc/ 下 HTML、PDF、index.html（需 Microsoft Edge 生成 PDF）
+# HTML, PDF, and index.html under dist/doc/ (PDF requires Microsoft Edge)
 python scripts/build_docs.py
 
-# 仅生成 PDF
+# PDF only
 python scripts/build_doc_pdf.py
 ```
 
-## 打包发布（开箱即用）
+## Package for release
 
-将 exe、`config/` 与由 `doc/guide_*.md` 生成的 HTML/PDF 合并到 `dist/java-runner2026/`：
+Merge the exe, `config/`, and HTML/PDF generated from `doc/guide_*.md` into `dist/java-runner2026/`:
 
 ```powershell
 cargo build --release
-python scripts/package_release.py   # 内含文档构建（dist/java-runner2026/doc/）
+python scripts/package_release.py   # includes doc build (dist/java-runner2026/doc/)
 ```
 
-发布目录结构：
+Release layout:
 
 ```
 dist/java-runner2026/
-  java-runner2026.exe      # 主程序
-  java-runner2026.toml     # 启动配置（可直接编辑）
-  config/              # 配置备份
-  doc/                 # guide_cn/en 的 HTML、PDF、index.html（无 README）
+  java-runner2026.exe      # Main program
+  java-runner2026.toml     # Launch config (edit in place)
+  config/                  # Config backup copy
+  doc/                     # guide_cn/en HTML, PDF, index.html
 ```
 
-可将整个 `dist/java-runner2026` 文件夹压缩分发给用户；**直接双击 `java-runner2026.exe` 即可运行**。若已将 exe 放入项目根目录的 `release/` 文件夹，打包脚本会优先使用该路径。
+Zip the entire `dist/java-runner2026` folder for distribution; **double-click `java-runner2026.exe` to run**. If the exe is placed in the project-root `release/` folder, the packaging script prefers that copy.
 
-## 配置文件
+## Configuration
 
-按以下优先级自动查找（也可用 `--config` 指定路径）：
+Resolved automatically in this order (override with `--config`):
 
-1. `{exe 目录}/java-runner2026.toml`
-2. `{exe 目录}/config/java-runner2026.toml`
+1. `{exe directory}/java-runner2026.toml`
+2. `{exe directory}/config/java-runner2026.toml`
 3. `./java-runner2026.toml`
 4. `./config/java-runner2026.toml`
 
 ```toml
-# 可选：仅显示版本输出含该关键字的 JVM
+# Optional: only list JVMs whose version output contains this keyword
 # version_key = "1.8"
 
-# 可选：自动选用路径含该片段的 JVM（跳过交互）
+# Optional: auto-select a JVM whose path contains this fragment (skip prompt)
 # java_home = "jdk1.8.0_271"
 
-# java.exe 之后的参数，默认等效于 java -version
+# Arguments after java.exe; default is equivalent to java -version
 launch_args = ["-version"]
 
-# 长参数可用单引号字面量（避免 \logs 等 TOML 转义问题）:
+# Long args as a single-quoted literal (avoids TOML escapes like \logs):
 # launch_args = '-Xmx512m -Xloggc:logs/gc.log -jar app.jar'
 ```
 
-详见 [使用与实现指南（中文）](doc/guide_cn.md) · [English Guide](doc/guide_en.md)
+See [User Guide (Chinese)](doc/guide_cn.md) · [English Guide](doc/guide_en.md)
 
-## 语言
+## Language
 
-界面语言随 Windows 用户区域自动选择：`zh*` 为中文，否则为英文。可用环境变量 `JAVA_RUNNER_LANG`（如 `zh-CN`、`en-US`）覆盖。
+UI language follows the Windows user locale: `zh*` → Chinese, otherwise English. Override with `JAVA_RUNNER_LANG` (e.g. `zh-CN`, `en-US`).
 
-## 使用
+## Usage
 
 ```powershell
-# 扫描 → 列出 JVM → 提示选择 → 运行配置中的启动命令
+# Scan → list JVMs → prompt → run configured launch command
 .\target\release\java-runner2026.exe
 
-# 仅扫描列表，不启动
+# List JVMs only, do not launch
 .\target\release\java-runner2026.exe --scan-only
 
-# 直接选择第 3 个 JVM 并启动（跳过交互）
+# Use the 3rd JVM directly (skip interactive selection)
 .\target\release\java-runner2026.exe --select 3
 
-# JSON 输出（供脚本使用，不进入选择/启动）
+# JSON output for scripting (no selection or launch)
 .\target\release\java-runner2026.exe --json
 
-# 指定配置文件
+# Specify config file
 .\target\release\java-runner2026.exe --config my.toml
 ```
 
-## 交互示例
+## Interactive example
 
 ```
-共发现 6 个 JVM（候选 25 条，扫描耗时 320ms）
+Found 6 JVM(s) (25 candidate(s), scan took 320ms)
 
 [1] C:\Program Files\Java\jdk-19
-    版本: 19.0.2
+    Version: 19.0.2
     ...
 
-请选择要使用的 JVM（输入序号）:
+Select a JVM (enter number):
 > 1
 
-使用 JVM: C:\Program Files\Java\jdk-19 (19.0.2)
-执行命令: "C:\Program Files\Java\jdk-19\bin\java.exe" -version
+Using JVM: C:\Program Files\Java\jdk-19 (19.0.2)
+Running: "C:\Program Files\Java\jdk-19\bin\java.exe" -version
 
 java version "19.0.2" 2023-01-17
 ...
 ```
 
-选中 JVM 后会设置 `JAVA_HOME`，并将其 `bin` 目录置于 `PATH` 最前，确保调用的是所选 Java。
+After selection, `JAVA_HOME` is set and its `bin` directory is prepended to `PATH` so the chosen Java is used.
 
-执行完成后默认会提示 **按任意键退出**（避免双击 exe 时窗口闪退）。在终端脚本中可加 `--no-pause` 跳过等待。
+When finished, the program waits for **any key** by default (so double-clicking the exe does not flash-close the window). Use `--no-pause` in scripts to skip the wait.
 
-未检测到 JVM 时显示：**未能检测到该机器安装的java环境，请安装后再执行本程序**
+If no JVM is found: **No Java installation detected on this machine. Please install Java and run this program again.**
 
-## 文档
+## Documentation
 
-- [guide_cn.md](doc/guide_cn.md) / [guide_en.md](doc/guide_en.md) — 使用与实现指南（源 Markdown）
-- 运行 `python scripts/build_docs.py` 后在 `dist/doc/` 查看 HTML/PDF
+- [guide_cn.md](doc/guide_cn.md) / [guide_en.md](doc/guide_en.md) — user and implementation guides (Markdown sources)
+- Run `python scripts/build_docs.py` to preview HTML/PDF under `dist/doc/`
