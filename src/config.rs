@@ -6,8 +6,8 @@ use std::path::{Path, PathBuf};
 
 use crate::util::exe_dir;
 
-const CONFIG_FILE_NAME: &str = "java-runner.toml";
-const CONFIG_DIR_PATH: &str = "config/java-runner.toml";
+const CONFIG_FILE_NAME: &str = "java-runner2026.toml";
+const CONFIG_DIR_PATH: &str = "config/java-runner2026.toml";
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct AppConfig {
@@ -94,7 +94,7 @@ pub fn load_config(explicit: Option<&Path>) -> Result<(AppConfig, PathBuf)> {
     Ok((AppConfig::default(), work_dir))
 }
 
-/// 配置文件所在应用根目录（config/java-runner.toml → 上级目录）。
+/// 配置文件所在应用根目录（config/java-runner2026.toml → 上级目录）。
 pub fn work_dir_for_config(config_path: &Path) -> PathBuf {
     let parent = config_path
         .parent()
@@ -197,9 +197,9 @@ mod tests {
 
     #[test]
     fn resolves_work_dir_from_config_path() {
-        let dir = work_dir_for_config(Path::new("D:/app/config/java-runner.toml"));
+        let dir = work_dir_for_config(Path::new("D:/app/config/java-runner2026.toml"));
         assert_eq!(dir, PathBuf::from("D:/app"));
-        let dir = work_dir_for_config(Path::new("D:/app/java-runner.toml"));
+        let dir = work_dir_for_config(Path::new("D:/app/java-runner2026.toml"));
         assert_eq!(dir, PathBuf::from("D:/app"));
     }
 

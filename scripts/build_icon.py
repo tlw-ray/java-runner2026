@@ -1,4 +1,4 @@
-"""Build java-runner.ico from pre-rendered icons in 素材/.
+﻿"""Build java-runner2026.ico from pre-rendered icons in 素材/.
 
 Expected source files (RGBA, exact pixel size):
   icon_16x16.png, icon_32x32.png, icon_64x64.png,
@@ -17,8 +17,8 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_DIR = ROOT / "素材"
 ASSETS = ROOT / "assets"
-MASTER = ASSETS / "java-runner-icon.png"
-OUT_ICO = ASSETS / "java-runner.ico"
+MASTER = ASSETS / "java-runner2026-icon.png"
+OUT_ICO = ASSETS / "java-runner2026.ico"
 OUT_DIR = ASSETS / "icon-sizes"
 
 ICO_SIZES = (16, 24, 32, 48, 64, 128, 256)

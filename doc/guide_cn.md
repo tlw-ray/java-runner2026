@@ -1,4 +1,4 @@
-# java-runner 使用与实现指南
+﻿# java-runner2026 使用与实现指南
 
 > 英文版：[guide_en.md](guide_en.md) · 构建后 HTML/PDF 输出至 `dist/doc/`（发布包内为 `doc/`）
 
@@ -10,11 +10,11 @@ Windows 命令行工具：扫描本机 JVM 安装位置，选择（或自动匹�
 
 ```mermaid
 flowchart TD
-    Start([用户启动 java-runner.exe]) --> Utf8[控制台切换 UTF-8]
+    Start([用户启动 java-runner2026.exe]) --> Utf8[控制台切换 UTF-8]
     Utf8 --> ParseArgs[解析命令行参数]
     ParseArgs --> ScanMsg["提示: 正在扫描 Windows JVM 安装位置..."]
     ScanMsg --> Scan[6 通道并行扫描 + 去重 + java -version]
-    Scan --> LoadConfig[加载 java-runner.toml]
+    Scan --> LoadConfig[加载 java-runner2026.toml]
     LoadConfig --> Filter{配置了 version_key ?}
     Filter -->|是| FilterJvm[按版本关键字过滤列表]
     Filter -->|否| AllJvm[使用全部 JVM]
@@ -59,13 +59,13 @@ flowchart TD
 **常用示例：**
 
 ```powershell
-java-runner.exe                          # 默认交互
-java-runner.exe --scan-only              # 仅列出 JVM
-java-runner.exe --select 3               # 直接使用第 3 个
-java-runner.exe --json                   # 脚本输出
-java-runner.exe --json -v                # JSON 含发现来源
-java-runner.exe --config my.toml         # 指定配置
-java-runner.exe --no-pause               # 不等待按键
+java-runner2026.exe                          # 默认交互
+java-runner2026.exe --scan-only              # 仅列出 JVM
+java-runner2026.exe --select 3               # 直接使用第 3 个
+java-runner2026.exe --json                   # 脚本输出
+java-runner2026.exe --json -v                # JSON 含发现来源
+java-runner2026.exe --config my.toml         # 指定配置
+java-runner2026.exe --no-pause               # 不等待按键
 ```
 
 ---
@@ -83,10 +83,10 @@ java-runner.exe --no-pause               # 不等待按键
 
 ```powershell
 $env:JAVA_RUNNER_LANG = 'en-US'
-java-runner.exe --help
+java-runner2026.exe --help
 
 $env:JAVA_RUNNER_LANG = 'zh-CN'
-java-runner.exe --scan-only
+java-runner2026.exe --scan-only
 ```
 
 ---
@@ -97,10 +97,10 @@ java-runner.exe --scan-only
 
 指定 `--config` 时使用给定路径；否则按顺序查找**第一个存在的文件**：
 
-1. `{exe 所在目录}/java-runner.toml`
-2. `{exe 所在目录}/config/java-runner.toml`
-3. `./java-runner.toml`（当前工作目录）
-4. `./config/java-runner.toml`
+1. `{exe 所在目录}/java-runner2026.toml`
+2. `{exe 所在目录}/config/java-runner2026.toml`
+3. `./java-runner2026.toml`（当前工作目录）
+4. `./config/java-runner2026.toml`
 
 均未找到时使用内置默认：`launch_args = ["-version"]`。
 
@@ -108,8 +108,8 @@ java-runner.exe --scan-only
 
 启动 Java 时，子进程的当前目录（`current_dir`）按以下规则确定：
 
-- 配置文件为 `…/config/java-runner.toml` → 应用根目录为 `config` 的**上一级**
-- 配置文件为 `…/java-runner.toml` → 应用根目录为配置文件**所在目录**
+- 配置文件为 `…/config/java-runner2026.toml` → 应用根目录为 `config` 的**上一级**
+- 配置文件为 `…/java-runner2026.toml` → 应用根目录为配置文件**所在目录**
 - 无配置文件 → 优先 `exe` 所在目录
 
 因此 `-jar app.jar`、相对路径日志（如 `logs/gc.log`）均相对于应用根目录解析。
@@ -183,7 +183,7 @@ Spring Boot 等框架常以 UTF-8 输出日志，而 Windows 控制台默认 GBK
 1. 启动时将控制台代码页设为 **65001（UTF-8）**
 2. 为 Java 子进程设置 `JAVA_TOOL_OPTIONS`，包含 `-Dsun.stdout.encoding=UTF-8`、`-Dsun.stderr.encoding=UTF-8`、`-Dlogging.charset.console=UTF-8` 等
 
-直接双击 **`java-runner.exe`** 即可（程序启动时会自动设置 UTF-8 代码页）；若仍有乱码，请在新开的 CMD 窗口中重试。
+直接双击 **`java-runner2026.exe`** 即可（程序启动时会自动设置 UTF-8 代码页）；若仍有乱码，请在新开的 CMD 窗口中重试。
 
 ---
 
@@ -569,7 +569,7 @@ JvmInstallation
 | 步骤 | 检查项 | 说明 |
 |------|--------|------|
 | 1 | 本机是否已安装 JDK/JRE | 确认 `{HOME}\bin\java.exe` 真实存在 |
-| 2 | `java-runner.exe --scan-only -v` | 若 **候选 0 条**：六通道均未命中；若 **候选 >0 但列表为空**：路径无有效 `java.exe` |
+| 2 | `java-runner2026.exe --scan-only -v` | 若 **候选 0 条**：六通道均未命中；若 **候选 >0 但列表为空**：路径无有效 `java.exe` |
 | 3 | 注册表 | 运行 `reg query HKLM\SOFTWARE\JavaSoft\JDK` 等，确认 `JavaHome` 是否有值 |
 | 4 | 环境变量 | 确认 `JAVA_HOME` 是否设置；名称是否含 JAVA/JDK/JRE；值是否为有效路径 |
 | 5 | PATH | 命令行执行 `where java`，对比通道 ⑤ 能否找到 |
@@ -595,16 +595,16 @@ JvmInstallation
 
 ```
 应用目录/
-  java-runner.exe       # 双击运行
+  java-runner2026.exe       # 双击运行
   magic-boot-1.0.jar
   config/
-    java-runner.toml    # 启动配置
+    java-runner2026.toml    # 启动配置
   logs/                 # GC 日志等（若 launch_args 引用相对路径，需自行创建）
 ```
 
-程序按 **exe 所在目录** 查找 `java-runner.toml` / `config/java-runner.toml`，无需额外 bat 切换目录或代码页。
+程序按 **exe 所在目录** 查找 `java-runner2026.toml` / `config/java-runner2026.toml`，无需额外 bat 切换目录或代码页。
 
-**更新 exe：** 若提示「无法替换」，说明 `java-runner.exe` 正在运行。先关闭相关窗口，或在程序目录运行 `更新java-runner.bat`（会先结束占用进程再复制）。
+**更新 exe：** 若提示「无法替换」，说明 `java-runner2026.exe` 正在运行。先关闭相关窗口或结束进程后再覆盖 exe。
 
 ---
 
@@ -614,7 +614,7 @@ JvmInstallation
 
 ```
 素材/icon_16x16.png … icon_256x256.png
-  → assets/java-runner.ico（嵌入 exe）
+  → assets/java-runner2026.ico（嵌入 exe）
   → assets/icon-sizes/icon_*.png
 ```
 
@@ -639,7 +639,7 @@ cargo build --release
 | 路径 | 说明 |
 |------|------|
 | `dist/doc/` | 本地预览：`guide_*.html`、`guide_*.pdf`、`index.html` |
-| `dist/java-runner/doc/` | 发布包内文档（打包时自动生成） |
+| `dist/java-runner2026/doc/` | 发布包内文档（打包时自动生成） |
 
 ```powershell
 pip install -r requirements.txt
@@ -659,12 +659,12 @@ python scripts/build_doc_pdf.py
 
 ```powershell
 cargo build --release
-python scripts/package_release.py   # 内含文档构建，写入 dist/java-runner/doc/
+python scripts/package_release.py   # 内含文档构建，写入 dist/java-runner2026/doc/
 ```
 
 也可先 `python scripts/build_docs.py` 预览 `dist/doc/`，再打包。
 
-输出 `dist/java-runner/`：exe、配置、`doc/`（仅 HTML/PDF）、`查看文档.bat`、`更新java-runner.bat`。
+输出 `dist/java-runner2026/`：exe、配置、`doc/`（仅 HTML/PDF）。
 
 ---
 
@@ -694,7 +694,7 @@ python scripts/package_release.py   # 内含文档构建，写入 dist/java-runn
 | 扫描调度 | `src/scan/mod.rs` | 六通道并行 |
 | 数据模型 | `src/model.rs` | 去重、`version_key` 过滤 |
 | 工具 | `src/util.rs` | UTF-8 控制台、版本探测 |
-| 配置示例 | `config/java-runner.toml` | 默认配置 |
+| 配置示例 | `config/java-runner2026.toml` | 默认配置 |
 | 图标脚本 | `scripts/build_icon.py` | 生成 ICO |
 | 文档公共模块 | `scripts/doc_common.py` | Markdown 转换、guide 定义 |
 | 文档构建 | `scripts/build_docs.py` | 生成 dist/doc/ HTML 与 PDF |

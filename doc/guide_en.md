@@ -1,4 +1,4 @@
-# java-runner User and Implementation Guide
+﻿# java-runner2026 User and Implementation Guide
 
 > Chinese version: [guide_cn.md](guide_cn.md) · Built HTML/PDF go to `dist/doc/` (shipped as `doc/` in the release package)
 
@@ -10,11 +10,11 @@ Windows command-line tool: scans local JVM installations, lets you select (or au
 
 ```mermaid
 flowchart TD
-    Start([User starts java-runner.exe]) --> Utf8[Console switched to UTF-8]
+    Start([User starts java-runner2026.exe]) --> Utf8[Console switched to UTF-8]
     Utf8 --> ParseArgs[Parse command-line arguments]
     ParseArgs --> ScanMsg["Message: Scanning Windows JVM installations..."]
     ScanMsg --> Scan[6-channel parallel scan + dedup + java -version]
-    Scan --> LoadConfig[Load java-runner.toml]
+    Scan --> LoadConfig[Load java-runner2026.toml]
     LoadConfig --> Filter{version_key configured?}
     Filter -->|Yes| FilterJvm[Filter list by version keyword]
     Filter -->|No| AllJvm[Use all JVMs]
@@ -59,13 +59,13 @@ flowchart TD
 **Common examples:**
 
 ```powershell
-java-runner.exe                          # Default interactive mode
-java-runner.exe --scan-only              # List JVMs only
-java-runner.exe --select 3               # Use the 3rd JVM directly
-java-runner.exe --json                   # Script-friendly output
-java-runner.exe --json -v                # JSON includes discovery sources
-java-runner.exe --config my.toml         # Specify config
-java-runner.exe --no-pause               # Do not wait for key press
+java-runner2026.exe                          # Default interactive mode
+java-runner2026.exe --scan-only              # List JVMs only
+java-runner2026.exe --select 3               # Use the 3rd JVM directly
+java-runner2026.exe --json                   # Script-friendly output
+java-runner2026.exe --json -v                # JSON includes discovery sources
+java-runner2026.exe --config my.toml         # Specify config
+java-runner2026.exe --no-pause               # Do not wait for key press
 ```
 
 ---
@@ -83,10 +83,10 @@ Override with the **`JAVA_RUNNER_LANG`** environment variable (e.g. `zh-CN` or `
 
 ```powershell
 $env:JAVA_RUNNER_LANG = 'en-US'
-java-runner.exe --help
+java-runner2026.exe --help
 
 $env:JAVA_RUNNER_LANG = 'zh-CN'
-java-runner.exe --scan-only
+java-runner2026.exe --scan-only
 ```
 
 Unless noted otherwise, the **User Interaction Scenarios** and **Common Errors** sections below show **English** program output (non-`zh*` locale).
@@ -99,10 +99,10 @@ Unless noted otherwise, the **User Interaction Scenarios** and **Common Errors**
 
 When `--config` is specified, the given path is used; otherwise the **first existing file** is chosen in this order:
 
-1. `{exe directory}/java-runner.toml`
-2. `{exe directory}/config/java-runner.toml`
-3. `./java-runner.toml` (current working directory)
-4. `./config/java-runner.toml`
+1. `{exe directory}/java-runner2026.toml`
+2. `{exe directory}/config/java-runner2026.toml`
+3. `./java-runner2026.toml` (current working directory)
+4. `./config/java-runner2026.toml`
 
 If none are found, built-in defaults apply: `launch_args = ["-version"]`.
 
@@ -110,8 +110,8 @@ If none are found, built-in defaults apply: `launch_args = ["-version"]`.
 
 When launching Java, the child process current directory (`current_dir`) is determined as follows:
 
-- Config file is `…/config/java-runner.toml` → app root is the **parent** of `config`
-- Config file is `…/java-runner.toml` → app root is the **directory containing** the config file
+- Config file is `…/config/java-runner2026.toml` → app root is the **parent** of `config`
+- Config file is `…/java-runner2026.toml` → app root is the **directory containing** the config file
 - No config file → prefer the `exe` directory
 
 Therefore `-jar app.jar` and relative-path logs (e.g. `logs/gc.log`) are resolved relative to the app root.
@@ -185,7 +185,7 @@ The program includes built-in mitigations:
 1. Sets the console code page to **65001 (UTF-8)** at startup
 2. Sets `JAVA_TOOL_OPTIONS` for the Java child process, including `-Dsun.stdout.encoding=UTF-8`, `-Dsun.stderr.encoding=UTF-8`, `-Dlogging.charset.console=UTF-8`, etc.
 
-Double-click **`java-runner.exe`** directly (the program sets the UTF-8 code page at startup). If garbling persists, try again in a freshly opened CMD window.
+Double-click **`java-runner2026.exe`** directly (the program sets the UTF-8 code page at startup). If garbling persists, try again in a freshly opened CMD window.
 
 ---
 
@@ -571,7 +571,7 @@ Check in the following order, and use `--verbose` to inspect each JVM's `sources
 | Step | Check | Description |
 |------|-------|-------------|
 | 1 | JDK/JRE installed on this machine | Confirm `{HOME}\bin\java.exe` actually exists |
-| 2 | `java-runner.exe --scan-only -v` | If **0 candidates**: none of the six channels matched; if **candidates >0 but list empty**: paths have no valid `java.exe` |
+| 2 | `java-runner2026.exe --scan-only -v` | If **0 candidates**: none of the six channels matched; if **candidates >0 but list empty**: paths have no valid `java.exe` |
 | 3 | Registry | Run `reg query HKLM\SOFTWARE\JavaSoft\JDK`, etc., and confirm `JavaHome` has a value |
 | 4 | Environment variables | Confirm `JAVA_HOME` is set; name contains JAVA/JDK/JRE; value is a valid path |
 | 5 | PATH | Run `where java` in a shell and compare with channel ⑤ results |
@@ -597,16 +597,16 @@ Typical directory layout (e.g. application directory):
 
 ```
 app/
-  java-runner.exe       # double-click to run
+  java-runner2026.exe       # double-click to run
   magic-boot-1.0.jar
   config/
-    java-runner.toml    # Launch config
+    java-runner2026.toml    # Launch config
   logs/                 # create manually if launch_args reference relative log paths
 ```
 
-The program resolves `java-runner.toml` / `config/java-runner.toml` relative to the **exe directory**; no wrapper batch file is required for working directory or code page.
+The program resolves `java-runner2026.toml` / `config/java-runner2026.toml` relative to the **exe directory**; no wrapper batch file is required for working directory or code page.
 
-**Updating the exe:** If you see "cannot replace", `java-runner.exe` is still running. Close related windows first, or run an update batch script in the program directory (Chinese releases may ship `更新java-runner.bat`, which terminates the process before copying).
+**Updating the exe:** If you see "cannot replace", `java-runner2026.exe` is still running. Close related windows or terminate the process before replacing the exe.
 
 ---
 
@@ -616,7 +616,7 @@ Multi-resolution icons come from pre-rendered PNGs under `素材/` (see `scripts
 
 ```
 素材/icon_16x16.png … icon_256x256.png
-  → assets/java-runner.ico (embedded in exe)
+  → assets/java-runner2026.ico (embedded in exe)
   → assets/icon-sizes/icon_*.png
 ```
 
@@ -641,7 +641,7 @@ cargo build --release
 | Path | Description |
 |------|-------------|
 | `dist/doc/` | Local preview: `guide_*.html`, `guide_*.pdf`, `index.html` |
-| `dist/java-runner/doc/` | Shipped docs (generated during packaging) |
+| `dist/java-runner2026/doc/` | Shipped docs (generated during packaging) |
 
 ```powershell
 pip install -r requirements.txt
@@ -661,12 +661,12 @@ Shared conversion: `scripts/doc_common.py`. Root `README.md` is **not** copied i
 
 ```powershell
 cargo build --release
-python scripts/package_release.py   # builds docs into dist/java-runner/doc/
+python scripts/package_release.py   # builds docs into dist/java-runner2026/doc/
 ```
 
 Run `python scripts/build_docs.py` first if you want to preview under `dist/doc/`.
 
-Output: `dist/java-runner/` with exe, config, `doc/` (HTML/PDF only), and helper batch files (`查看文档.bat`, `更新java-runner.bat`).
+Output: `dist/java-runner2026/` with exe, config, and `doc/` (HTML/PDF only).
 
 ---
 
@@ -696,7 +696,7 @@ Output: `dist/java-runner/` with exe, config, `doc/` (HTML/PDF only), and helper
 | Scan orchestration | `src/scan/mod.rs` | Six-channel parallel scan |
 | Data model | `src/model.rs` | Dedup, `version_key` filtering |
 | Utilities | `src/util.rs` | UTF-8 console, version probing |
-| Config example | `config/java-runner.toml` | Default config |
+| Config example | `config/java-runner2026.toml` | Default config |
 | Icon script | `scripts/build_icon.py` | Generate ICO |
 | Doc shared module | `scripts/doc_common.py` | Markdown conversion, guide definitions |
 | Doc build | `scripts/build_docs.py` | Generate dist/doc/ HTML and PDF |

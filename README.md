@@ -1,4 +1,4 @@
-# java-runner
+﻿# java-runner2026
 
 Windows 命令行工具：扫描本机 JVM 安装位置，提示用户选择一个，并在**当前终端**用该 JVM 运行可配置的 Java 启动命令。
 
@@ -35,35 +35,33 @@ python scripts/build_doc_pdf.py
 
 ## 打包发布（开箱即用）
 
-将 exe、`config/` 与由 `doc/guide_*.md` 生成的 HTML/PDF 合并到 `dist/java-runner/`：
+将 exe、`config/` 与由 `doc/guide_*.md` 生成的 HTML/PDF 合并到 `dist/java-runner2026/`：
 
 ```powershell
 cargo build --release
-python scripts/package_release.py   # 内含文档构建（dist/java-runner/doc/）
+python scripts/package_release.py   # 内含文档构建（dist/java-runner2026/doc/）
 ```
 
 发布目录结构：
 
 ```
-dist/java-runner/
-  java-runner.exe      # 主程序
-  java-runner.toml     # 启动配置（可直接编辑）
+dist/java-runner2026/
+  java-runner2026.exe      # 主程序
+  java-runner2026.toml     # 启动配置（可直接编辑）
   config/              # 配置备份
   doc/                 # guide_cn/en 的 HTML、PDF、index.html（无 README）
-  查看文档.bat         # 打开文档首页
-  更新java-runner.bat  # 结束进程并用 java-runner.new.exe 覆盖
 ```
 
-可将整个 `dist/java-runner` 文件夹压缩分发给用户；**直接双击 `java-runner.exe` 即可运行**。若已将 exe 放入项目根目录的 `release/` 文件夹，打包脚本会优先使用该路径。
+可将整个 `dist/java-runner2026` 文件夹压缩分发给用户；**直接双击 `java-runner2026.exe` 即可运行**。若已将 exe 放入项目根目录的 `release/` 文件夹，打包脚本会优先使用该路径。
 
 ## 配置文件
 
 按以下优先级自动查找（也可用 `--config` 指定路径）：
 
-1. `{exe 目录}/java-runner.toml`
-2. `{exe 目录}/config/java-runner.toml`
-3. `./java-runner.toml`
-4. `./config/java-runner.toml`
+1. `{exe 目录}/java-runner2026.toml`
+2. `{exe 目录}/config/java-runner2026.toml`
+3. `./java-runner2026.toml`
+4. `./config/java-runner2026.toml`
 
 ```toml
 # 可选：仅显示版本输出含该关键字的 JVM
@@ -89,19 +87,19 @@ launch_args = ["-version"]
 
 ```powershell
 # 扫描 → 列出 JVM → 提示选择 → 运行配置中的启动命令
-.\target\release\java-runner.exe
+.\target\release\java-runner2026.exe
 
 # 仅扫描列表，不启动
-.\target\release\java-runner.exe --scan-only
+.\target\release\java-runner2026.exe --scan-only
 
 # 直接选择第 3 个 JVM 并启动（跳过交互）
-.\target\release\java-runner.exe --select 3
+.\target\release\java-runner2026.exe --select 3
 
 # JSON 输出（供脚本使用，不进入选择/启动）
-.\target\release\java-runner.exe --json
+.\target\release\java-runner2026.exe --json
 
 # 指定配置文件
-.\target\release\java-runner.exe --config my.toml
+.\target\release\java-runner2026.exe --config my.toml
 ```
 
 ## 交互示例

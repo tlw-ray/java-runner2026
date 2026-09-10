@@ -1,4 +1,4 @@
-"""Shared Markdown → HTML helpers for java-runner documentation.
+﻿"""Shared Markdown → HTML helpers for java-runner2026 documentation.
 
 Source of truth: doc/guide_cn.md and doc/guide_en.md.
 """
@@ -44,9 +44,9 @@ GUIDES: tuple[GuideSpec, ...] = (
         stem="guide_cn",
         lang="zh-CN",
         html_lang="zh-CN",
-        brand="java-runner 使用文档",
+        brand="java-runner2026 使用文档",
         nav_home="文档首页",
-        footer="java-runner · 生成于 {generated}",
+        footer="java-runner2026 · 生成于 {generated}",
         index_label="使用与实现指南（中文）",
         pdf_label="guide_cn.pdf（中文 PDF）",
     ),
@@ -54,9 +54,9 @@ GUIDES: tuple[GuideSpec, ...] = (
         stem="guide_en",
         lang="en",
         html_lang="en",
-        brand="java-runner documentation",
+        brand="java-runner2026 documentation",
         nav_home="Documentation home",
-        footer="java-runner · generated {generated}",
+        footer="java-runner2026 · generated {generated}",
         index_label="User and Implementation Guide (English)",
         pdf_label="guide_en.pdf (English PDF)",
     ),
@@ -68,7 +68,7 @@ WEB_HTML_TEMPLATE = """<!DOCTYPE html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{title} — java-runner</title>
+  <title>{title} — java-runner2026</title>
   <style>
     :root {{
       --primary: #2e6be6;
@@ -216,7 +216,7 @@ PRINT_HTML_TEMPLATE = """<!DOCTYPE html>
   </script>
 </head>
 <body>
-  <p class="meta">{meta} · java-runner</p>
+  <p class="meta">{meta} · java-runner2026</p>
   {body}
 </body>
 </html>
@@ -227,7 +227,7 @@ INDEX_TEMPLATE = """<!DOCTYPE html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>java-runner documentation</title>
+  <title>java-runner2026 documentation</title>
   <style>
     body {{ font-family: "Segoe UI", "Microsoft YaHei", sans-serif; margin: 0; background: #f8fafc; color: #1f2937; }}
     header {{ background: linear-gradient(135deg, #2e6be6, #1890ff); color: #fff; padding: 2rem 1.5rem; }}
@@ -243,7 +243,7 @@ INDEX_TEMPLATE = """<!DOCTYPE html>
 </head>
 <body>
   <header>
-    <h1 style="margin:0 0 .5rem">java-runner</h1>
+    <h1 style="margin:0 0 .5rem">java-runner2026</h1>
     <p style="margin:0;opacity:.9">Documentation index · generated {generated}</p>
   </header>
   <main>

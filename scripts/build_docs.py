@@ -1,4 +1,4 @@
-"""Build HTML and PDF documentation from doc/guide_cn.md and doc/guide_en.md.
+﻿"""Build HTML and PDF documentation from doc/guide_cn.md and doc/guide_en.md.
 
 Outputs under dist/doc/ (HTML, PDF, index.html only — doc/ keeps Markdown sources).
 
@@ -103,7 +103,7 @@ def build_pdf(out_dir: Path, generated: str) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Build java-runner documentation")
+    parser = argparse.ArgumentParser(description="Build java-runner2026 documentation")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--html-only", action="store_true", help="Generate HTML only")
     group.add_argument("--pdf-only", action="store_true", help="Generate PDF only")

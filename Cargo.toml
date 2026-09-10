@@ -1,5 +1,5 @@
 [package]
-name = "java-runner"
+name = "java-runner2026"
 version = "0.1.0"
 edition = "2021"
 description = "扫描 Windows JVM 安装位置，选择 JVM 并在当前终端运行 Java 程序"

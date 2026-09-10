@@ -14,7 +14,7 @@ pub struct Args {
 
 pub fn parse_args() -> Args {
     let m = i18n::messages();
-    let matches = Command::new("java-runner")
+    let matches = Command::new("java-runner2026")
         .version(env!("CARGO_PKG_VERSION"))
         .about(m.about)
         .arg(
