@@ -1,0 +1,5 @@
+/target
+/dist
+/assets/icon-sizes
+__pycache__/
+*.py[cod]

@@ -1,0 +1,14 @@
+# 可选：路径片段，匹配后自动选用 JVM（跳过交互）
+# java_home = "jdk1.8.0_271"
+
+# 可选：版本信息关键字，仅列举 java -version 输出中包含该关键字的 JVM
+# version_key = "1.8"
+
+# 启动命令配置：java.exe 之后的参数
+launch_args = ["-version"]
+
+# 长参数可写成单引号字面量（Windows 路径勿用双引号内 \logs，TOML 会报错）:
+# launch_args = '-Xmx512m -Xloggc:logs/gc.log -jar magic-boot-1.0.jar'
+
+# 或写成数组:
+# launch_args = ["-Xmx512m", "-jar", "magic-boot-1.0.jar"]

@@ -1,0 +1,24 @@
+[package]
+name = "java-runner"
+version = "0.1.0"
+edition = "2021"
+description = "扫描 Windows JVM 安装位置，选择 JVM 并在当前终端运行 Java 程序"
+authors = ["java-runner2026"]
+
+[dependencies]
+winreg = "0.55"
+walkdir = "2"
+rayon = "1"
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+
+[build-dependencies]
+winres = "0.1"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
